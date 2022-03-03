@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default.html}"
+>
+
+<head>
+    <!--자동추가-->
+    <style>
+       .popup-wrap {
+            background-color: rgba(0, 0, 0, .3);
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 15px;
+           z-index: 1000;
+        }
+
+       .popup-body{
+           width:100%;
+           background-color:#ffffff;
+       }
+
+
+        .slide-box {
+            width: 100vw;
+            float: left;
+        }
+
+        .slide-next {
+            position: absolute;
+            top: 45%;
+            right: 0;
+        }
+
+        .slide-prev {
+            position: absolute;
+            top: 45%;
+            left: 0;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+
+<div layout:fragment="content">
+
+
+    <div class="popup-wrap">
+        <div >
+        <div class="col mb-5" style="width:900px;margin-left: 167px;float: left">
+            <div class="card h-100">
+                <!-- Product image-->
+                <div id="imageBox" style="overflow:hidden; height: 713px;transition: all 1s">
+                    <button type="button" class="btn btn-default slide-prev" id="imagePrevBtn" th:data-image="${post.uploadFiles.size()}">
+                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                    </button>
+                    <div class="slide-container"
+                         th:style="'width:'+${post.uploadFiles.size()}+'00vw; transition : all 1s;'">
+                        <div th:each="files,i : ${post.uploadFiles}" class="slide-box"> <!--이미지 추가 -->
+                            <img className="card-img-top img" th:src="@{/display(fileName=${files.imageURL})}"
+                                 style="width: 898px; height: 713px"/>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-default slide-next" id="imageNextBtn" th:data-image="${post.uploadFiles.size()}">
+                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+            <!-- Product details-->
+
+        </div>
+        <!--comment zone -->
+        <div class="col mb-5" style="width:700px; height: 762px;  float:right; margin-right: 105px">
+            <!-- Product details-->
+
+            <div class="card-body p-4 popup-body" >
+                <div class="detailPost" style="overflow: auto;">
+
+                    <!-- Product name-->
+                    <h5 class="fw-bolder" th:text="${post.author}">Fancy Product</h5>
+                    <!-- Product price-->
+                    <p th:text="${post.content}"> 내용 </p>
+                    <p th:text="${#temporals.format(post.regDate,'yyyy-MM-dd')}">날짜/p>
+                </div>
+                <hr>
+                <div class="replyList" style="height: 427px; overflow: auto" >
+
+
+
+
+
+
+
+                </div>
+
+
+            </div>
+
+            <div class="mb-4" style="background: white;  height:120px; border: 1px solid black">
+                <div class="comment_addBox" style="padding: 20px;">
+                    <input  style="float: left; border: none; outline: none " id="replyMember"  th:value="${loginMember}" readonly>
+                    <textarea class="form-control" rows="1" style="border: none" id="mainComment"
+                              placeholder="댓글을 남겨보세요"></textarea>
+                    <button type="button" id="mainCommentBtn" class="btn btn-default" style="float: right; ">등록
+                    </button>
+                </div>
+            </div>
+
+
+        </div>
+        </div>
+        <!--end comment-->
+
+
+        <input type="hidden" id="detailPostId" th:value="${post.id}">
+        <input type="hidden" id="detailRegionId" th:value="${rid}">
+
+        <div style="float: right">
+        <th:block th:if="${isLoginMember == true}">
+
+            <button  type="button" class="btn btn-primary"
+                     th:onclick="|location.href='@{/region/{rid}/post/{pid}/edit(rid=${rid},pid=${post.id})}'|">글 수정</button>
+            <button type="button" class="btn btn-danger" id="postDeleteBtn">삭제</button>
+        </th:block>
+
+        <button  type="button" class="btn btn-default"
+                 th:onclick="|location.href='@{/region/{rid}/post/(rid=${rid})}'|">목록으로</button>
+        </div>
+
+    </div>
+    <script src="/js/post/postDetail.js"></script>
+</div>
+</body>
+</html>

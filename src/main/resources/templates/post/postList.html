@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default.html}"
+>
+
+<head>
+    <!--자동추가-->
+    <style>
+        .slide-container {
+            width: 100vw;
+            transition: transform 1s;
+        <!-- container / box 개 담을 수 있음 -->
+        }
+
+        .slide-box {
+            width: 100vw;
+            float: left;
+        }
+
+        .slide-next {
+            position: absolute;
+            top: 45%;
+            right: 0;
+        }
+
+        .slide-prev {
+            position: absolute;
+            top: 45%;
+            left: 0;
+            z-index: 100;
+        }
+    </style>
+
+
+</head>
+<body>
+
+<div layout:fragment="content">
+
+    <h2 style="text-align: center;" th:text="${postMaster}+'님의'"></h2>
+    <h1 style="text-align: center; " th:text="'#'+ ${regionName}" ></h1>
+
+
+
+    <div th:each="post,j: ${posts}">
+
+        <div class="col mb-5" style="width:900px;margin-left: 150px; border: 1px solid gray;">
+            <div class="card h-100">
+                <!-- Product image-->
+                <img class="card-img-top img" th:src="@{/display(fileName=${post.uploadFiles?.imageURL})}"
+                     style="width: 896px; height: 600px" alt="이미지가 없습니다"/>
+            </div>
+            <!-- Product details-->
+            <div class="card-body p-4">
+                <div class="text-center">
+                    <!-- Product name-->
+                    <!--<h5 class="fw-bolder" th:text="${post.author}">Fancy Product</h5>-->
+                    <!-- Product price-->
+                    <p th:text="'댓글 '+${post.replyCount}+'개'"></p>
+                    <p th:text="${#temporals.format(post.regDate,'yyyy-MM-dd')}"></p>
+                </div>
+            </div>
+            <!-- Product actions-->
+            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                <div class="text-center"><a class="btn btn-default mt-auto"
+                                            th:href="@{|/region/${rid}/post/${post.id}|}">글 보기</a></div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <nav align="center">
+        <ul class="pagination">
+
+            <th:block th:if="${page.prev}">
+                <li>
+                    <a th:href="@{|/region/${rid}/post?num=${page.startPageNum -1}|}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            </th:block>
+
+
+            <th:block th:each="seq : ${#numbers.sequence(page.startPageNum,page.endPageNum)}">
+
+                <th:block  th:if="${seq} != 0">
+                    <th:block  th:if="${select} != ${seq}">
+                        <li>
+                            <a th:href="@{|/region/${rid}/post?num=${seq}|}" th:text="${seq}">1</a>
+                        </li>
+                    </th:block >
+                    <th:block  th:if="${select} == ${seq}">
+                        <li class="active">
+                            <a>[[${seq}]]</a>
+                        </li>
+                    </th:block >
+                </th:block>
+
+            </th:block>
+
+
+            <th:block th:if="${page.next}">
+                <li>
+                    <a th:href="@{|/region/${rid}/post?num=${page.endPageNum +1}|}" aria-label="Previous">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </th:block>
+        </ul>
+
+        <th:block th:if="${isLoginMember == true}" >
+            <div align="center" style="margin-bottom: 100px">
+                <button type="button" class="btn btn-primary"
+                        th:onclick="|location.href='@{/region/{rid}/post/save/(rid=${rid})}'|">글작성
+                </button>
+                <button type="button" class="btn btn-danger"
+                        th:onclick="|location.href='@{/region/{rid}/delete/(rid=${rid})}'|">지역삭제
+                </button>
+
+
+            </div>
+        </th:block>
+    </nav>
+
+
+
+</div>
+
+</div>
+
+</body>
+</html>

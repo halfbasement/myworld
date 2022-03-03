@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default.html}"
+>
+
+<head>
+    <!--자동추가-->
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                <div class="card border-0 shadow rounded-3 my-5">
+                    <div class="card-body p-4 p-sm-5">
+                        <h5 class="card-title text-center mb-5 fw-light fs-5">회원탈퇴</h5>
+
+
+                        <form method="post" th:action th:object="${member}">
+
+                            <div class="form-floating mb-3">
+                                <input  th:errorclass="field-error" th:field="*{email}"
+                                        type="email" class="form-control" id="floatingInputSave" placeholder="이메일을 입력해주세요." readonly >
+                                <label for="floatingInputSave" style="font-size: 11px">email</label>
+                                <div th:class="field-error"  th:errors="*{email}"> <!--  error가 있으면 -->
+                                    이메일 오류
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input th:errorclass="field-error" th:field="*{password}"
+                                       type="password" class="form-control" id="floatingPasswordDelete" placeholder="비밀번호를 입력해주세요" >
+                                <label for="floatingPasswordDelete" style="font-size: 11px">password</label>
+                                <div th:class="field-error"  th:errors="*{password}"> <!--  error가 있으면 -->
+                                    비밀번호 오류
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input th:errorclass="field-error" th:field="*{passwordConfirm}"
+                                       type="password" class="form-control" id="floatingPasswordConfirmDelete" placeholder="비밀번호를 입력해주세요" >
+                                <label for="floatingPasswordConfirmDelete" style="font-size: 11px">passwordConfirm</label>
+                                <div th:class="field-error"  th:errors="*{passwordConfirm}"> <!--  error가 있으면 -->
+                                    비밀번호 오류
+                                </div>
+                            </div>
+
+
+
+
+
+                            <div class="d-grid">
+                                <button class="btn btn-danger btn-login text-uppercase fw-bold" type="submit">회원탈퇴</button>
+                            </div>
+                            <hr class="my-4">
+                        </form>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

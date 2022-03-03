@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout/default.html}"
+>
+
+<head>
+    <!--자동추가-->
+</head>
+<body>
+
+<div layout:fragment="content">
+ㅁㅔ인
+
+  <div sec:authorize="hasRole('USER')">유저</div>
+  <div sec:authorize="hasRole('MANAGER')">매니저</div>
+  <div sec:authorize="hasRole('ADMIN')">관리자</div>
+
+  <div sec:authorize="isAuthenticated()">
+      Only Authenticated user can see this text
+  </div>
+    이름
+    <div sec:authentication="name"></div>
+  Authenticated user roles:
+  <div sec:authentication="principal.authorities"></div>
+</div>
+</body>
+</html>

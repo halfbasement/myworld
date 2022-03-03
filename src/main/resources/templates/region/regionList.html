@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout/default.html}"
+>
+
+<head>
+
+    <style>
+        .popup-wrap {
+            background-color: rgba(0, 0, 0, .3);
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: none;
+            padding: 15px;
+        }
+        .popup{
+            width:100%;
+        max-width:400px;
+        border-radius:10px;
+        overflow:hidden;
+        background-color:#264db5;
+
+        box-shadow: 5px 10px 10px 1px rgba(0,0,0,.3);
+        }
+        .popup-head{
+            width:100%;
+        height:50px;
+        display:flex;
+        align-items:center;
+            justify-content:center;
+        }
+        .popup-body{
+        width:100%;
+            background-color:#ffffff;
+        }
+        .body-content{
+        width:100%;
+            padding:30px;
+        }
+        .body-titlebox{
+        text-align:center;
+        width:100%;
+            height:40px;
+            margin-bottom:10px;
+        }
+        .body-contentbox{
+        word-break:break-word;
+        overflow-y:auto;
+        min-height:100px;
+        max-height:200px;
+        }
+        .popup-foot{
+        width:100%;
+            height:50px;
+        }
+        .pop-btn{
+        display:inline-flex;
+        width:50%;
+        height:100%;
+        justify-content:center;
+        align-items:center;
+        float:left;
+        color:#ffffff;
+        cursor:pointer;
+        }
+        .pop-btn.confirm{
+        border-right:1px solid #3b5fbf;
+        }
+    </style>
+    <!--자동추가-->
+</head>
+<body>
+
+<div layout:fragment="content">
+    <input type="hidden" th:value="${loginMemberId}" id="loginMemberId">
+    <h2 class="regionMaster"></h2>
+    <div style="float: left;">
+        <div id="map" style="  width:700px;height:500px; ">
+        </div>
+        <button type="button" id="regionSaveBtn" style="float: bottom" class="btn btn-success" th:onclick="|location.href='@{/region/save}'|">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>지역생성
+        </button>
+    </div>
+
+    <div style="margin-left: 750px">
+        <div style="margin-bottom: 50px;margin-left: 10px">
+            <button type="button" class="btn btn-default btn-lg memberRegionButton" id="myRegion" th:value="${loginMemberId}" style="width: 120px">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>내 지역
+            </button>
+        </div>
+        <h4>다른 회원 지역방문</h4>
+        <button type="button" id="upMemberPage" class="btn btn-default" style="margin-left: 58px">
+            <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+        </button>
+        <div class="regionMemberList" >
+
+            <button type="button"  class="btn btn-default btn-lg" style="width: 100px">
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>1231
+            </button>
+
+        </div>
+
+        <button type="button" id="downMemberPage" class="btn btn-default" style="margin-left: 58px; border: none; " >
+            <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+        </button>
+
+
+
+
+    </div>
+
+   <!-- <input type="text" id="searchMemberInput" placeholder="아이디를 입력하세요">
+    <button type="button"id="searchMemberBtn">검색</button>
+-->
+   <!-- <section class="py-5 bg-light" >
+        <div class="container px-4 px-lg-5 mt-5">
+            <h2 class="fw-bolder mb-4">Related products</h2>
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+
+
+
+
+
+
+                <div class="col mb-5">
+                    <div class="card h-100">
+                        &lt;!&ndash; Product image&ndash;&gt;
+                        <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                        &lt;!&ndash; Product details&ndash;&gt;
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                &lt;!&ndash; Product name&ndash;&gt;
+                                <h5 class="fw-bolder">Fancy Product</h5>
+                                &lt;!&ndash; Product price&ndash;&gt;
+                                $40.00 - $80.00
+                            </div>
+                        </div>
+                        &lt;!&ndash; Product actions&ndash;&gt;
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View options</a></div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+        </div>
+    </section>
+-->
+
+    <!-- jQuery 별도 로드가 필요합니다! -->
+    <script type="text/javascript"
+            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6628f1e8680527f8da231ce5f82e210c&libraries=services,clusterer"></script>
+    <script>
+        var map = new kakao.maps.Map(document.getElementById('map'), { // 지도를 표시할 div
+            center: new kakao.maps.LatLng(36.2683, 127.6358), // 지도의 중심좌표
+            level: 14, // 지도의 확대 레벨,
+        });
+
+        // 마커 클러스터러를 생성합니다
+        var clusterer = new kakao.maps.MarkerClusterer({
+            map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
+            averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
+            minLevel: 10, // 클러스터 할 최소 지도 레벨
+            calculator: [10, 30, 50], // 클러스터의 크기 구분 값, 각 사이값마다 설정된 text나 style이 적용된다
+            texts: getTexts, // texts는 ['삐약', '꼬꼬', '꼬끼오', '치멘'] 이렇게 배열로도 설정할 수 있다
+            styles: [{ // calculator 각 사이 값 마다 적용될 스타일을 지정한다
+                width: '30px', height: '30px',
+                background: 'rgba(51, 204, 255, .8)',
+                borderRadius: '15px',
+                color: '#000',
+                textAlign: 'center',
+                fontWeight: 'bold',
+                lineHeight: '31px'
+            },
+                {
+                    width: '40px', height: '40px',
+                    background: 'rgba(255, 153, 0, .8)',
+                    borderRadius: '20px',
+                    color: '#000',
+                    textAlign: 'center',
+                    fontWeight: 'bold',
+                    lineHeight: '41px'
+                },
+                {
+                    width: '50px', height: '50px',
+                    background: 'rgba(255, 51, 204, .8)',
+                    borderRadius: '25px',
+                    color: '#000',
+                    textAlign: 'center',
+                    fontWeight: 'bold',
+                    lineHeight: '51px'
+                },
+                {
+                    width: '60px', height: '60px',
+                    background: 'rgba(255, 80, 80, .8)',
+                    borderRadius: '30px',
+                    color: '#000',
+                    textAlign: 'center',
+                    fontWeight: 'bold',
+                    lineHeight: '61px'
+                }
+            ]
+        });
+
+        // 클러스터 내부에 삽입할 문자열 생성 함수입니다
+        function getTexts(count) {
+
+            // 한 클러스터 객체가 포함하는 마커의 개수에 따라 다른 텍스트 값을 표시합니다
+            if (count < 5) {
+                return '조금';
+            } else if (count < 10) {
+                return '가끔';
+            } else if (count < 15) {
+                return '많이';
+            } else {
+                return '자주가';
+            }
+        }
+
+        // 데이터를 가져오기 위해 jQuery를 사용합니다
+        // 데이터를 가져와 마커를 생성하고 클러스터러 객체에 넘겨줍니다
+        $.post("/region", function (data) {
+
+
+            console.log(data)
+
+            $('.regionMaster').html(data.regionMaster+'<span style="font-size: 20px">님이 방문한 지역입니다</span>');
+
+            // 데이터에서 좌표 값을 가지고 마커를 표시합니다
+            // 마커 클러스터러로 관리할 마커 객체는 생성할 때 지도 객체를 설정하지 않습니다
+            var markers = $(data.positions).map(function (i, position) {
+
+                var maks = new kakao.maps.Marker({
+                    position: new kakao.maps.LatLng(position.latitude, position.longitude),
+                    zIndex: 1000
+                    // regionId : position.regionId
+                });
+
+
+                var infowindow = new kakao.maps.InfoWindow({
+                    content: '<div style="width: 150px; text-align: center">' + position.content + '</div>',
+                    removeable: true
+                })
+                kakao.maps.event.addListener(maks, 'mouseover', makeOverListener(map, maks, infowindow));
+                kakao.maps.event.addListener(maks, 'mouseout', makeOutListener(infowindow));
+                kakao.maps.event.addListener(maks, 'click', function () {
+                    console.log("z-index",maks.getZIndex())
+
+
+                    let data = {
+                        latitude: position.latitude,
+                        longitude: position.longitude,
+                        regionId: position.regionId,
+                        regionName: position.content
+                    }
+
+                    console.log(data)
+
+                    window.location.href=`/region/${data.regionId}/post`
+/*
+
+                    ajax({
+                        type: 'get',
+                        url: '/post/',
+                        contentType: 'application/json; charset=utf-8',
+                        data: JSON.stringify(data),
+                        success: function (data) {
+                            alert("지역이 생성되었습니다.")
+                            window.location.replace("/region");
+                        },
+                        error: function (e) {
+                            alert("이미 저장된 지역 입니다. 다른 지역을 선택하세요")
+
+                        }
+                    })//  dataType: 'json', //데이터타입 json으로 하면 null(parent)을 못받아줘서 에러가 뜸
+
+*/
+
+                });
+
+                return maks
+            });
+
+            clusterer.addMarkers(markers);
+
+        });
+
+        // 인포윈도우를 표시하는 클로저를 만드는 함수입니다
+        function makeOverListener(map, marker, infowindow) {
+            return function () {
+                infowindow.open(map, marker);
+            };
+        }
+
+
+        // 인포윈도우를 닫는 클로저를 만드는 함수입니다
+        function makeOutListener(infowindow) {
+            return function () {
+                infowindow.close();
+            };
+        }
+
+
+        $(function(){
+            $("#confirm").click(function(){
+                modalClose(); //모달 닫기 함수 호출
+
+                //컨펌 이벤트 처리
+            });
+            $("#modal-open").click(function(){
+                $("#popup").css('display','flex').hide().fadeIn();
+                //팝업을 flex속성으로 바꿔준 후 hide()로 숨기고 다시 fadeIn()으로 효과
+            });
+            $("#close").click(function(){
+                modalClose(); //모달 닫기 함수 호출
+            });
+            function modalClose(){
+                $("#popup").fadeOut(); //페이드아웃 효과
+            }
+        });
+
+
+        let memberPage = 0;
+
+
+
+
+      $.post("/region/members/"+memberPage, function (result) {
+          let str ="";
+
+          console.log(result)
+
+              $('#upMemberPage').hide();
+              $('#downMemberPage').hide();
+          if(result.nextAble==true){
+              $('#downMemberPage').show();
+          }
+
+          for(let i=0; i<result.members.length;i++) {
+              str += '<div>'
+              str += '  <button type="button" class="btn btn-default btn-lg memberRegionButton" value="'+result.members[i].memberId+'" style="width: 150px"> '
+              str += '    <span class="glyphicon glyphicon-user" aria-hidden="true"></span> ' + result.members[i].nickName
+              str += '   </button>'
+              str += '</div>'
+          }
+
+          if(result.prevAble ==false){
+              $('#upMemberPage').hide();
+          }
+          $('.regionMemberList').html(str);
+        });
+
+
+        $("#downMemberPage").on('click',function (){
+            memberPage++;
+            $.post("/region/members/"+memberPage, function (result) {
+                let str ="";
+
+                for(let i=0; i<result.members.length;i++) {
+                    str += '<div>'
+                    str += '  <button type="button" class="btn btn-default btn-lg memberRegionButton" value="'+result.members[i].memberId+'" style="width: 150px"> '
+                    str += '    <span class="glyphicon glyphicon-user" aria-hidden="true"></span> ' + result.members[i].nickName
+                    str += '   </button>'
+                    str += '</div>'
+                }
+
+
+                $('.regionMemberList').html(str);
+
+                if(result.prevAble==true){
+                    $('#upMemberPage').show();
+                }
+
+                if(result.nextAble == false){
+                    $('#downMemberPage').hide();
+                }
+            });
+
+        })
+        $("#upMemberPage").on('click',function (){
+            if(memberPage >0){
+                memberPage--;
+            }
+            $.post("/region/members/"+memberPage, function (result) {
+                let str ="";
+
+                for(let i=0; i<result.members.length;i++) {
+                    str += '<div>'
+                    str += '  <button type="button" class="btn btn-default btn-lg memberRegionButton" value="'+result.members[i].memberId+'" style="width: 150px"> '
+                    str += '    <span class="glyphicon glyphicon-user" aria-hidden="true"></span> ' + result.members[i].nickName
+                    str += '   </button>'
+                    str += '</div>'
+                }
+
+                $('.regionMemberList').html(str);
+
+
+
+                if(result.prevAble ==false){
+                    $('#upMemberPage').hide();
+                }
+
+                if(result.nextAble == true){
+                    $('#downMemberPage').show();
+                }
+            });
+
+        })
+
+
+
+
+        $(document).on('click','.memberRegionButton',function (e){
+
+
+
+            console.log(e.target.value);
+
+            let memberId= e.target.value;
+
+            let loginMemberId = $('#loginMemberId').val();
+
+            if(loginMemberId === memberId){
+                $('#regionSaveBtn').show();
+            }else{
+                $('#regionSaveBtn').hide();
+            }
+
+
+
+
+            // 데이터를 가져오기 위해 jQuery를 사용합니다
+            // 데이터를 가져와 마커를 생성하고 클러스터러 객체에 넘겨줍니다
+            $.post("/region/member/"+memberId, function (data) {
+
+                clusterer.clear();
+
+                console.log(data)
+
+
+
+                    $('.regionMaster').html(data.regionMaster+'<span style="font-size: 20px">님이 방문한 지역입니다</span>');
+                // 데이터에서 좌표 값을 가지고 마커를 표시합니다
+                // 마커 클러스터러로 관리할 마커 객체는 생성할 때 지도 객체를 설정하지 않습니다
+                var markers = $(data.positions).map(function (i, position) {
+
+                    var maks = new kakao.maps.Marker({
+                        position: new kakao.maps.LatLng(position.latitude, position.longitude),
+                        zIndex: 1000
+                        // regionId : position.regionId
+                    });
+
+
+                    var infowindow = new kakao.maps.InfoWindow({
+                        content: '<div style="width: 150px; text-align: center">' + position.content + '</div>',
+                        removeable: true
+                    })
+                    kakao.maps.event.addListener(maks, 'mouseover', makeOverListener(map, maks, infowindow));
+                    kakao.maps.event.addListener(maks, 'mouseout', makeOutListener(infowindow));
+                    kakao.maps.event.addListener(maks, 'click', function () {
+                        console.log("z-index",maks.getZIndex())
+
+
+                        let data = {
+                            latitude: position.latitude,
+                            longitude: position.longitude,
+                            regionId: position.regionId,
+                            regionName: position.content
+                        }
+
+                        console.log(data)
+
+                        window.location.href=`/region/${data.regionId}/post`
+
+                    });
+
+                    return maks
+                });
+
+                clusterer.addMarkers(markers);
+
+            });
+
+
+        })
+
+    /*    $('#searchMemberBtn').on('click',function (){
+
+            let memberNickName= $('#searchMemberInput').val();
+
+
+
+        })*/
+
+    </script>
+
+
+
+
+
+  <!--  <div sec:authorize="hasRole('USER')">유저</div>
+    <div sec:authorize="hasRole('MANAGER')">매니저</div>
+    <div sec:authorize="hasRole('ADMIN')">관리자</div>
+
+    <div sec:authorize="isAuthenticated()">
+        Only Authenticated user can see this text
+    </div>
+
+    Authenticated user roles:
+    <div sec:authentication="principal.authorities"></div>-->
+
+</div>
+
+</body>
+</html>

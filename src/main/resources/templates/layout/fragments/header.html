@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="fragment-header">
+
+
+    <div id="header">
+        <div id="headerTitle">
+            <a th:href="@{/}" >게시판</a>
+            <div id="headerLogin" style="float: right">
+                <button class="btn btn-success"
+                        th:onclick="|location.href='@{/login}'|"
+                        type="button">로그인</button>
+
+                <form th:action="@{/logout}" method="post">
+                    <button class="btn btn-success"
+                            type="submit">로그아웃</button>
+
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+</html>
