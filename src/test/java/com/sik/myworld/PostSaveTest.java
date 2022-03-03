@@ -51,16 +51,6 @@ public class PostSaveTest {
 
 
 
-    @Test
-    void savePost(){
-
-        Member findMember = memberRepository.findById(1L).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원 입니다"));
-
-
-
-
-    }
-
 
 
 }
