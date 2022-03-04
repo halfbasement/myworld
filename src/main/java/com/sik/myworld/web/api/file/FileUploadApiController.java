@@ -37,8 +37,8 @@ public class FileUploadApiController {
 
     private final PostService postService;
 
-    //@Value("${upload.path}")
-    private String uploadPath = " /home/ec2-user/app/step1/uploadFiles";
+    @Value("${upload.path}")
+    private String uploadPath;
 
     @PostMapping("/uploadFile")
     public ResponseEntity<List<UploadFileDto>> upload(MultipartFile[] uploadFiles){
