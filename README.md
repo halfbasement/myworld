@@ -85,7 +85,7 @@ distinct를 써도 실제 db에선 이런식으로 조인이 될텐데 여기서
 - 다른회원들의 프로필 생성은 QueryDsl과 페이징으로 나를 제외하고 가입한순서 대로 3명씩 rest형식으로 뿌려줘서 실시간으로 여러명의 회원을 볼 수 있습니다.
 
 
-## 6. 로그인 , 기타 보안
+### 6. 로그인 , 기타 보안
 
 - 기본적으로 Spring Security를 이용하였고 기본적인 CRUD권한은 다 설정 했습니다
 - oauthLoginService에서 실제 oauth사용자의 db를 반영 할 때 profile의 name값으로 nickname을 채우면 기존 사용자와 겹칠수도 있고 ( 검증로직을 짠다 해도 후처리가 애매해지기 때문에 ) oauth사용자가 본인의 profile에 지정한 name값을 nickname으로 사용하고싶지 않을 수도 있기 때문에 바로 수정폼으로 redirect하도록 짰습니다 ,oauth사용자의 정보를  db에 반영시 nickname값은 일단 본인의 이메일값과 동일하게 반영하고 @Validated로 일반 회원가입이나 , 수정에 nickname값을 정규식을 사용하여 특수문자를 못넣게 로직을 짰습니다 이렇게 되면 oauth 사용자가 로그인 하면서 nickname값이 email이기 @가 들어가는데 유도한 수정창에서 닉네임을 변경 할 수밖에 없습니다.
