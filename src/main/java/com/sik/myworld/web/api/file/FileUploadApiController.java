@@ -37,7 +37,7 @@ public class FileUploadApiController {
 
     private final PostService postService;
 
- /*   @Value("${upload.path}")*/
+    @Value("${upload.path}")
     private String uploadPath;
 
     @PostMapping("/uploadFile")
