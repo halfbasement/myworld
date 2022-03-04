@@ -41,6 +41,10 @@
 - kakao map ( clusterer )
 - Spring validation , lombok 등
 
+### Devops
+
+- aws ( 설정파일이 잘못되어 수정중 입니다)
+
 
 ## 기능 설명
 
