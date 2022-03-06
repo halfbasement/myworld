@@ -37,7 +37,7 @@ public class MemberUserDetailService implements UserDetailsService {
 
         Member member = findMember.get();
 
-        System.out.println("member = " + member);
+//        System.out.println("member = " + member);
 
         //email을 id로 쓰기 때문에 ,  User( id: username , pw: password ) , Entity( id : email , pw : password )
         MemberAuthDto memberAuthDto = new MemberAuthDto(member.getEmail(),member.getPassword(),member.isSocial()
