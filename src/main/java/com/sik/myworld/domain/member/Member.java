@@ -3,6 +3,8 @@ package com.sik.myworld.domain.member;
 import com.sik.myworld.domain.BaseEntity;
 import com.sik.myworld.domain.region.Region;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -32,8 +34,8 @@ public class Member extends BaseEntity {
         this.nickname = nickname;
     }
 
-  /*  @OneToMany(mappedBy = "member")
-    private List<Region> regions = new ArrayList<>();*/
+    @OneToMany(mappedBy = "member",orphanRemoval = true)
+    private List<Region> regions = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.LAZY) //값 타입 컬렉션 매핑
