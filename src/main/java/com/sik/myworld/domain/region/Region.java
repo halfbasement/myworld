@@ -27,7 +27,7 @@ public class Region extends BaseEntity {
     @Column(name = "regionname")
     private String regionName; //지역 이름
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
