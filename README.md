@@ -2,7 +2,7 @@
 
 - 1인개발 / 02.16 ~ 03.01
 
-- http://ec2-54-180-216-229.ap-northeast-2.compute.amazonaws.com:8080/
+
 
 
 ## 프로젝트 설명
