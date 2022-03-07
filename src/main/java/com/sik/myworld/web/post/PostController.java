@@ -54,6 +54,8 @@ public class PostController {
                              @AuthenticationPrincipal MemberAuthDto loginMember) {
         Region findRegion = regionService.findByRegionId(rid);
 
+        System.out.println("findRegion = " + findRegion.getMember().getNickname());
+
         Post post = postService.findById(pid);
 
         boolean isLoginMember = findRegion.getMember().getEmail().equals(loginMember.getEmail());
@@ -63,7 +65,7 @@ public class PostController {
 
         postDetailDto.setAuthor(findRegion.getMember().getNickname());
 
-        model.addAttribute("post", new PostDetailDto(post));
+        model.addAttribute("post", postDetailDto);
         model.addAttribute("rid", rid);
         model.addAttribute("loginMember",loginMember.getNickName());
         model.addAttribute("isLoginMember",isLoginMember);
