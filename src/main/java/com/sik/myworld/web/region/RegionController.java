@@ -88,7 +88,7 @@ public class RegionController {
 
         List<Member> content = members.getContent();
 
-        List<RegionMemberList> memberDtos = content.stream().map(member -> new RegionMemberList(member.getId(), member.getNickname())).collect(Collectors.toList());
+        List<RegionMemberList> memberDtos = content.stream().filter(member -> member.getNickname().contains("@")==false).map(member -> new RegionMemberList(member.getId(), member.getNickname())).collect(Collectors.toList());
 
         result.put("members",memberDtos);
         result.put("nextAble",members.hasNext());
