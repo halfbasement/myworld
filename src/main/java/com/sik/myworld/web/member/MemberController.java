@@ -94,7 +94,7 @@ public class MemberController {
         if(equals == true){
 
 
-            memberService.deleteMemberEmail(dto.getEmail());
+            memberService.deleteMemberEmail(findMember.getEmail());
 
 
 
