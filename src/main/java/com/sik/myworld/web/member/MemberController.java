@@ -126,6 +126,7 @@ public class MemberController {
 
 
 
+
             model.addAttribute("member",new MemberEditDto(findMember));
 
         }else{

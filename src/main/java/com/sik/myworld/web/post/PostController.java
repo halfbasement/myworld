@@ -59,6 +59,10 @@ public class PostController {
         boolean isLoginMember = findRegion.getMember().getEmail().equals(loginMember.getEmail());
 
 
+        PostDetailDto postDetailDto = new PostDetailDto(post);
+
+        postDetailDto.setAuthor(findRegion.getMember().getNickname());
+
         model.addAttribute("post", new PostDetailDto(post));
         model.addAttribute("rid", rid);
         model.addAttribute("loginMember",loginMember.getNickName());
