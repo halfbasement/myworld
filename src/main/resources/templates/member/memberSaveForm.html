@@ -97,7 +97,7 @@
 
                             <div class="form-floating mb-3">
                                 <input  th:errorclass="field-error" th:field="*{nickName}"
-                                        type="text" class="form-control" id="floatingNickNameSave" placeholder="별명 입력해주세요." >
+                                        type="text" class="form-control" id="floatingNickNameSave" placeholder="별명 입력해주세요." maxlength="5">
                                 <label for="floatingNickNameSave" style="font-size: 11px">nickname</label>
                                 <div th:class="field-error"  th:errors="*{nickName}"> <!--  error가 있으면 -->
                                     닉네임 오류

@@ -13,14 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class LoginController {
 
 
-    @GetMapping("/test")
-    public String main(@AuthenticationPrincipal MemberAuthDto memberAuthDto){
-
-        log.info("authDTO={}",memberAuthDto);
-
-
-        return "test/test";
-    }
 
     @GetMapping("/login")
     public String loginForm(){

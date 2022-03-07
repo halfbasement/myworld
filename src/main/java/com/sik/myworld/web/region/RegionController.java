@@ -43,7 +43,13 @@ public class RegionController {
     @PreAuthorize("hasRole('USER')") //유저가 아니면 아예 못탐
     @GetMapping
     public String region(@AuthenticationPrincipal MemberAuthDto memberAuthDto, Model model){
+
+        if(memberAuthDto !=null && memberAuthDto.getNickName().contains("@")==true){
+            return "redirect:/member/"+memberAuthDto.getNickName()+"/edit";
+        }
+
         Member loginMember = memberService.findByEmail(memberAuthDto.getEmail());
+
 
       //로그인한 멤버의 아이디를 넘김
         Long loginMemberId = loginMember.getId();
