@@ -13,6 +13,7 @@ public class MemberDeleteFormDto {
 
     @NotBlank
     private String email; //readOnly
+    boolean social;
     @NotBlank
     private String password;
     @NotBlank
