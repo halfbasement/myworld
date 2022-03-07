@@ -29,20 +29,41 @@
                                 </div>
                             </div>
                             <div class="form-floating mb-3">
-                                <input th:errorclass="field-error" th:field="*{password}"
-                                       type="password" class="form-control" id="floatingPasswordDelete" placeholder="비밀번호를 입력해주세요" >
-                                <label for="floatingPasswordDelete" style="font-size: 11px">password</label>
-                                <div th:class="field-error"  th:errors="*{password}"> <!--  error가 있으면 -->
-                                    비밀번호 오류
-                                </div>
+                                <th:block th:if="*{social == true}">
+                                    <input th:errorclass="field-error" th:field="*{password}"
+                                           type="password" class="form-control" id="floatingPasswordDeleteSocial" placeholder="비밀번호를 입력해주세요" readonly >
+                                    <label for="floatingPasswordDeleteSocial" style="font-size: 11px">password</label>
+                                    <div th:class="field-error"  th:errors="*{password}"> <!--  error가 있으면 -->
+                                        비밀번호 오류
+                                    </div>
+                                </th:block>
+                                <th:block th:if="*{social ==false}">
+                                    <input th:errorclass="field-error" th:field="*{password}"
+                                           type="password" class="form-control" id="floatingPasswordDelete" placeholder="비밀번호를 입력해주세요" >
+                                    <label for="floatingPasswordDelete" style="font-size: 11px">password</label>
+                                    <div th:class="field-error"  th:errors="*{password}"> <!--  error가 있으면 -->
+                                        비밀번호 오류
+                                    </div>
+                                </th:block>
                             </div>
                             <div class="form-floating mb-3">
+                                <th:block th:if="*{social == true}">
+                                    <input th:errorclass="field-error" th:field="*{passwordConfirm}"
+                                           type="password" class="form-control" id="floatingPasswordConfirmDeleteSocial" placeholder="비밀번호를 입력해주세요"  readonly>
+                                    <label for="floatingPasswordConfirmDeleteSocial" style="font-size: 11px">passwordConfirm</label>
+                                    <div th:class="field-error"  th:errors="*{passwordConfirm}"> <!--  error가 있으면 -->
+                                        비밀번호 오류
+                                    </div>
+                                </th:block>
+                                <th:block th:if="*{social == false}">
                                 <input th:errorclass="field-error" th:field="*{passwordConfirm}"
                                        type="password" class="form-control" id="floatingPasswordConfirmDelete" placeholder="비밀번호를 입력해주세요" >
                                 <label for="floatingPasswordConfirmDelete" style="font-size: 11px">passwordConfirm</label>
                                 <div th:class="field-error"  th:errors="*{passwordConfirm}"> <!--  error가 있으면 -->
                                     비밀번호 오류
                                 </div>
+
+                                </th:block>
                             </div>
 
 

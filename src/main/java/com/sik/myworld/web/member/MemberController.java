@@ -39,10 +39,16 @@ public class MemberController {
 
         if(equals == true){
             Member findMember = memberService.findByEmail(memberEmail);
+
             MemberDeleteFormDto deleteFormDto = new MemberDeleteFormDto();
+
 
             deleteFormDto.setEmail(findMember.getEmail());
 
+
+            if(findMember.isSocial() == true){
+                deleteFormDto.setSocial(true);
+            }
 
             model.addAttribute("member",deleteFormDto);
 
@@ -63,6 +69,13 @@ public class MemberController {
         boolean equals = memberAuthDto.getEmail().equals(memberEmail);
         Member findMember = memberService.findByEmail(memberEmail);
 
+        if (findMember.isSocial() == true && equals ==true){
+            memberService.deleteMemberEmail(findMember.getEmail());
+
+            return "redirect:/logout";
+        }
+
+
         boolean matches = passwordEncoder.matches(dto.getPassword(), findMember.getPassword());
 
         if(!dto.getPassword().contentEquals(dto.getPasswordConfirm()) || matches == false){
@@ -78,10 +91,6 @@ public class MemberController {
         }
 
 
-
-
-
-
         if(equals == true){
 
 
@@ -94,6 +103,7 @@ public class MemberController {
         }else{
             return null;
         }
+
 
 
     }
