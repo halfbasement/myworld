@@ -1,6 +1,7 @@
 package com.sik.myworld.domain.member;
 
 import com.sik.myworld.domain.BaseEntity;
+import com.sik.myworld.domain.comment.Reply;
 import com.sik.myworld.domain.region.Region;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -15,7 +16,7 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor
 @Getter
-@ToString(exclude = "team")
+@ToString(exclude = {"regions","replies"})
 public class Member extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,6 +37,9 @@ public class Member extends BaseEntity {
 
     @OneToMany(mappedBy = "member",orphanRemoval = true)
     private List<Region> regions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member",orphanRemoval = true)
+    private List<Reply> replies = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.LAZY) //값 타입 컬렉션 매핑
