@@ -2,6 +2,7 @@
 
 - 1인개발 / 02.16 ~ 03.01
 - http://ec2-54-180-216-229.ap-northeast-2.compute.amazonaws.com:8080/
+- guest@guest.com / 1234 (가입을 원치 않으시면..) 
 - 디자인은 비중을 두지 않고 만들었습니다.
 
 
