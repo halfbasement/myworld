@@ -4,7 +4,7 @@
 - http://ec2-54-180-216-229.ap-northeast-2.compute.amazonaws.com:8080/
 - ID : guest@guest / Password :  000 (가입을 원치 않으시면..) 
 - 디자인은 비중을 두지 않고 만들었습니다.
-
+- 구글 애널리틱스 연동 예정
 
 ## 프로젝트 설명
 
